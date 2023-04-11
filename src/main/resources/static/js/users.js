@@ -17,7 +17,8 @@ async function loadUsers() {
   for (const user of users) {
     let userHtml = '<tr><td>'+user.id+'</td><td>'
                             +user.name+'</td><td>'
-                            +user.lastName+'</td><td>'+user.email+'</td><td>'
+                            +user.lastName+'</td><td>'
+                            +user.email+'</td><td>'
                             +user.phone+'</td>' +
                             '<td><a href="#" class="btn btn-danger btclassNamecle btn-sm">' +
                             '<i class="fas fa-trash"></iclassName </a>' +
