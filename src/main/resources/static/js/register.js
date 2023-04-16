@@ -23,6 +23,6 @@ async function regirterUsers() {
             body: JSON.stringify(bodyRequest)
         });
         alert('La cuenta fue creada con exito!!');
-        window.location.href= 'login.html'
+        window.location.href= 'index.html'
     }
 }
