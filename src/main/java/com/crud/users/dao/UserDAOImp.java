@@ -22,4 +22,26 @@ public class UserDAOImp implements IUserDAO {
         return entityManager.createQuery(query).getResultList();
 
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = entityManager.find(User.class,id);
+        entityManager.remove(user);
+    }
+
+    @Override
+    public void registerUser(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    public boolean checkUser(User user) {
+        String query = "FROM User WHERE email = :email AND password = :password";
+        List<User> users = entityManager.createQuery(query)
+                .setParameter("email", user.getEmail())
+                .setParameter("password", user.getPassword())
+                .getResultList();
+        return !users.isEmpty();
+    }
+
 }

@@ -8,4 +8,10 @@ import java.util.List;
 public interface IUserDAO {
     @Autowired
     List<User> getUsers();
+
+    void deleteUser(Long id);
+
+    void registerUser(User user);
+
+    boolean checkUser(User user);
 }
