@@ -25,7 +25,7 @@ async function loadUsers() {
                             +user.name+'</td><td>'
                             +user.lastName+'</td><td>'
                             +user.email+'</td><td>'
-                            +user.phone+'</td>' +
+                            +user.phone == null ? '-' : user.phone+'</td>' +
                             '<td>'+ buttonDelete +
                             '</td></tr>';
     listHtmlShow += userHtml;
