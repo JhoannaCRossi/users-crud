@@ -1,16 +1,25 @@
 $(document).ready(function() {
   loadUsers();
   $('#users').DataTable();
+  showEmailUser();
+
 });
 
+function showEmailUser(){
+  document.getElementById('email-user').outerHTML = localStorage.email;
+}
+
+function getHeaders(){
+  return {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.token
+  }
+}
 async function loadUsers() {
   const request = await fetch('api/users', {
     method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-    //body: JSON.stringify({a: 1, b: 'Textual content'})
+    headers: getHeaders()
   });
 
   const users = await request.json();
@@ -25,7 +34,7 @@ async function loadUsers() {
                             +user.name+'</td><td>'
                             +user.lastName+'</td><td>'
                             +user.email+'</td><td>'
-                            +user.phone == null ? '-' : user.phone+'</td>' +
+                            +user.phone+'</td>' +
                             '<td>'+ buttonDelete +
                             '</td></tr>';
     listHtmlShow += userHtml;
@@ -34,15 +43,12 @@ async function loadUsers() {
 }
 
 async function deleteUser(id){
-  if(!confirm('¿Desea eliminar este usuario?')){
+  if(!confirm('Do you want to delete this user?')){
     return;
   }
   const request = await fetch('api/users/'+id, {
     method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
+    headers: getHeaders()
   });
   document.location.reload();
 }

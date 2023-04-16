@@ -3,6 +3,7 @@ package com.crud.users.controllers;
 import com.crud.users.dao.IUserDAO;
 import com.crud.users.dao.UserDAOImp;
 import com.crud.users.models.User;
+import com.crud.users.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,19 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private IUserDAO iUserDAO;
-    @RequestMapping(value= "api/users/{id}")
-    public User getUser(@PathVariable Long id){
-        User user = new User();
-        user.setId(id);
-        user.setName("jhoa");
-        user.setLastName("rossi");
-        user.setEmail("rossi@com.ar");
-        user.setPhone("555-55-555");
-        return user;
-    }
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @RequestMapping(value= "api/users", method= RequestMethod.GET)
-    public List<User> getUsers(){
+    public List<User> getUsers(@RequestHeader(value="Authorization") String token) {
+       if(!tokenValidate(token)){return null;};
         return iUserDAO.getUsers();
+
     }
     @RequestMapping(value= "api/users/{id}", method= RequestMethod.DELETE)
-    public void deleteUser(@PathVariable Long id){
+    public void deleteUser(@RequestHeader(value="Authorization") String token,
+                           @PathVariable Long id){
+        if(!tokenValidate(token)){return;};
         iUserDAO.deleteUser(id);
     }
 
@@ -41,5 +38,11 @@ public class UsersController {
         String hash = argon2.hash(1,1024,1,user.getPassword());
         user.setPassword(hash);
         iUserDAO.registerUser(user);
+    }
+
+    private boolean tokenValidate(String token){
+        String idUser = jwtUtil.getKey(token);
+        return idUser != null;
+
     }
 }

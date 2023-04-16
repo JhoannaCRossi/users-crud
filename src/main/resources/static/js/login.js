@@ -17,7 +17,9 @@ async function login() {
     });
 
     const response = await request.text();
-    if(response == 'ok'){
+    if(response != 'fail'){
+        localStorage.token=response;
+        localStorage.email=bodyRequest.email;
         window.location.href= 'users.html';
     }else{
         alert("Incorrect Credentials");

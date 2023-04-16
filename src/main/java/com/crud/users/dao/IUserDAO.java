@@ -13,5 +13,5 @@ public interface IUserDAO {
 
     void registerUser(User user);
 
-    boolean checkUser(User user);
+    User checkUser(User user);
 }
